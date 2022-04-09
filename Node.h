@@ -5,7 +5,7 @@ class Node {
 	Node* next;
 
 public:
-	Node():next(nullptr), data(1){}
+	Node():next(nullptr), data(-1){}
 	Node(int x, Node* ptr = nullptr): data(x), next(ptr){}
 	~Node(){}
 	void InsertAfter(Node* newnode);

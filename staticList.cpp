@@ -34,16 +34,14 @@ int staticList::First()
 }
 void staticList::InsertAfter(int newData, int insertAfter)
 {
-	if (headFree == -1)
+	if (headFree != -1)
 	{
-		throw "Array is Full";
+		int newLoc = this->headFree;
+		headFree = arr[1][headFree];
+		arr[0][newLoc] = newData;
+		arr[1][newLoc] = arr[1][insertAfter];
+		arr[1][insertAfter] = newLoc;
 	}
-
-	int newLoc = this->headFree;
-	headFree = arr[1][headFree];
-	arr[0][newLoc] = newData;
-	arr[1][newLoc] = arr[1][insertAfter];
-	arr[1][insertAfter] = newLoc;
 }
 
 void staticList::DeleteNode(int deletAfter)
