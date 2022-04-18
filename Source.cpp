@@ -1,32 +1,44 @@
 
 #include"List.h"
 #include <iostream>
-#include"staticList.h"
 #include"Stack.h"
+#include"staticList.h"
 
 
 
 using namespace std;
-List* setCountryStracture(int& cities);
+List* setCountryStracture(float& cities);
 void getToTown(List* countryStructure, int currComp, int* colores, staticList& accessible);
 void creatAccessibleList(List* countryStructure, int cities, int currComp, staticList& accessibleRec, staticList& accessible);
 void getToTownNoRec(List* countryStructure, int currComp, int* colores, staticList& accessible);
 
 void main()
 {
-	int cities;
-	List* countryStructure = setCountryStracture(cities);
-	int currComp;
+	try{
+		float cities;
+		List* countryStructure = setCountryStracture(cities);
+		float currComp;
 
-	cout << "please insert computer number: ";
-	cin >> currComp;
-	staticList accessibleRec(cities);
-	staticList accessible(cities);
-	creatAccessibleList(countryStructure, cities, currComp - 1, accessibleRec, accessible);
-	cout << "rec: ";
-	accessibleRec.print();
-	cout << endl<< "ateratev: ";
-	accessible.print();
+		cout << "please insert computer number: ";
+		cin >> currComp;
+		if (currComp <= 0 || currComp > cities || (currComp - int(currComp)) != 0)
+		{
+			delete[] countryStructure;
+			throw("invalid input");
+		}
+		staticList accessibleRec(cities);
+		staticList accessible(cities);
+		creatAccessibleList(countryStructure, cities, currComp - 1, accessibleRec, accessible);
+		cout << "Cities accessible from source city" << currComp << "(recursive algorithm): ";
+		accessibleRec.print();
+		cout << endl << "Cities accessible from source city" << currComp << "(iterative algorithm): ";
+		accessible.print();
+		delete[] countryStructure;
+	}
+	catch (const char* msg)
+	{
+		cout << msg << endl;
+	}
 }
 
 void creatAccessibleList(List* countryStructure, int cities, int currComp , staticList & accessibleRec, staticList& accessible)
@@ -115,19 +127,20 @@ void getToTownNoRec(List* countryStructure, int currComp, int* colores, staticLi
 
 }
 
-List* setCountryStracture(int& cities)
+List* setCountryStracture(float& cities)
 {
-	int roads;
+	float roads;
 	int first, second;
 	List* cs;
 
 	cout << "please insert number of cities, and roads: " << endl;
 	cin >> cities >> roads;
 
-	//if (cities > 0)
-	//{
+	if (cities <= 0 || cities - int(cities) != 0 || roads < 0 || roads - int(roads) != 0 || roads > cities * (cities - 1))
+		throw("invalid input");
+
 	cs = new List[cities];
-	//}
+	//delete cs;
 	
 
 	cout << "Please insert" << roads << " connections";
@@ -135,8 +148,18 @@ List* setCountryStracture(int& cities)
 	for (int i = 0; i < roads; i++)
 	{
 		cin >> first >> second;
+		if (first <= 0 || first > cities || second <= 0 || second > cities || cs[first - 1].Find(second))
+		{
+			delete[] cs;
+			throw("invalid input");
+		}
 		Node* toInsert = new Node(second);
-		cs[first - 1].InsertAfter(toInsert);   // implement!!
+		cs[first - 1].InsertAfter(toInsert);   
+	}
+	if (getchar() != '\n')
+	{
+		delete[] cs;
+		throw("invalid input");
 	}
 
 	return cs;

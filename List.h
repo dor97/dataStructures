@@ -4,7 +4,7 @@
 
 class List {
 
-	Node head;
+	Node* head = new Node();
 
 public:
 	List(){}
@@ -14,7 +14,7 @@ public:
 	bool IsEmpty();
 	Node* First();
 	int Last();
-	int Find(int x);
+	bool Find(int x);
 	void InsertAfter(Node* x);
 	void DeleteNode();
 	void Print();
